@@ -8,8 +8,8 @@ export const getProducts = () => {
   return async (dispatch) => {
     dispatch(getProductsRequest());
     try {
-      const res = await axios.get("/api/products");
-      dispatch(getProductsSuccess({ products: res.data }));
+      const res = await axios.get("/api/product");
+      dispatch(getProductsSuccess({ products: res.data.products }));
     } catch (error) {
       dispatch(getProductsFailure({ error: error.data }));
     }
