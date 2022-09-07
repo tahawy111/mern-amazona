@@ -36,13 +36,22 @@ const CartScreen = () => {
                       <Link to={`/product/${item.slug}`}>{item.name}</Link>
                     </Col>
                     <Col md={3} className="align-items-center">
-                      <Button variant="light" disabled={item.quantity === 1}>
+                      <Button
+                        variant="light"
+                        disabled={item.quantity === 1}
+                        onClick={() =>
+                          updateCartHandler(item, item.quantity - 1)
+                        }
+                      >
                         <AiFillMinusCircle size={22} />
                       </Button>{" "}
                       <span>{item.quantity}</span>{" "}
                       <Button
                         variant="light"
                         disabled={item.quantity === item.countInStock}
+                        onClick={() =>
+                          updateCartHandler(item, item.quantity + 1)
+                        }
                       >
                         <AiFillPlusCircle size={22} />
                       </Button>
@@ -69,6 +78,13 @@ const CartScreen = () => {
                     items) : $
                     {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
                   </h3>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <div className="d-grid">
+                    <Button variant="primary" disabled={cartItems.length === 0}>
+                      Proceed To Checkout
+                    </Button>
+                  </div>
                 </ListGroup.Item>
               </ListGroup>
             </Card.Body>
