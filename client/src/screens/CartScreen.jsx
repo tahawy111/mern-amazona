@@ -1,14 +1,35 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import MessageBox from "./../componenets/MessageBox";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
 import { BsTrashFill } from "react-icons/bs";
+import { cartAddItem, cartRemoveItem } from "../slices/cartSlice";
 
-const CartScreen = () => {
+const CartScreen = (item, quantity) => {
   const { cart } = useSelector((state) => state.cart);
   const { cartItems } = cart;
+  const products = useSelector((state) => state.product);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const updateCartHandler = (item, quantity) => {
+    const product = products.products.find((x) => x._id === item._id);
+    if (product.countInStock < quantity) {
+      window.alert("Sorry. Product is out of stock");
+      return;
+    }
+    dispatch(cartAddItem({ ...product, quantity }));
+  };
+
+  const removeItemHandler = (item) => {
+    dispatch(cartRemoveItem(item));
+  };
+
+  const checkoutHandler = () => {
+    navigate("/signin?redirect=/shipping");
+  };
 
   return (
     <div>
@@ -58,7 +79,10 @@ const CartScreen = () => {
                     </Col>
                     <Col md={3}>${item.price}</Col>
                     <Col md={2}>
-                      <Button variant="light">
+                      <Button
+                        variant="light"
+                        onClick={() => removeItemHandler(item)}
+                      >
                         <BsTrashFill size={22} />
                       </Button>
                     </Col>
@@ -81,7 +105,11 @@ const CartScreen = () => {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <div className="d-grid">
-                    <Button variant="primary" disabled={cartItems.length === 0}>
+                    <Button
+                      variant="primary"
+                      disabled={cartItems.length === 0}
+                      onClick={checkoutHandler}
+                    >
                       Proceed To Checkout
                     </Button>
                   </div>
