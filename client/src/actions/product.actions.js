@@ -1,4 +1,4 @@
-import { axios } from "axios";
+import axios from "axios";
 import {
   getProductsFailure,
   getProductsRequest,
@@ -9,7 +9,6 @@ export const getProducts = () => {
     dispatch(getProductsRequest());
     try {
       const res = await axios.get("/api/products");
-      console.log(res);
       dispatch(getProductsSuccess({ products: res.data }));
     } catch (error) {
       dispatch(getProductsFailure({ error: error.data }));

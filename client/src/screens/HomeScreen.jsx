@@ -1,39 +1,32 @@
-import "../App.css";
-import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "./../actions/product.actions";
+import { useSelector } from "react-redux";
+import { Col, Row } from "react-bootstrap";
+import Product from "../componenets/Product";
+import { Helmet } from "react-helmet-async";
+import LoadingBox from "../componenets/LoadingBox";
 
 const HomeScreen = () => {
-  const shouldLog = useRef(true);
-  const dispatch = useDispatch();
   const products = useSelector((state) => state.product);
-
-  useEffect(() => {
-    if (shouldLog.current) {
-      shouldLog.current = false;
-      dispatch(getProducts());
-    }
-  }, [dispatch]);
 
   return (
     <div>
+      <Helmet>
+        <title>Amazona</title>
+      </Helmet>
       <h1>Featured Products</h1>
       <div className="products">
-        {/* {products.map((product) => (
-          <div className="product" key={product._id}>
-            <img src={product.image} alt={product.name} />
-            <div className="product-info">
-              <Link to={`/product/${product.slug}`}>
-                <p>{product.name}</p>
-              </Link>
-              <p>
-                <strong>${product.price}</strong>
-              </p>
-              <button>Add To Cart</button>
-            </div>
-          </div>
-        ))} */}
+        {products.loading ? (
+          <LoadingBox />
+        ) : products.error ? (
+          <h3 color="red">{products.error}</h3>
+        ) : (
+          <Row>
+            {products.products.map((product) => (
+              <Col sm={6} md={4} lg={3} key={product._id}>
+                <Product product={product} />
+              </Col>
+            ))}
+          </Row>
+        )}
       </div>
     </div>
   );
