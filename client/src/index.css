@@ -60,3 +60,6 @@ main {
   border: 1px solid rgb(255 192 0 / 50%) !important;
   outline: none !important;
 }
+.img-thumbnail {
+  max-height: 80px;
+}
