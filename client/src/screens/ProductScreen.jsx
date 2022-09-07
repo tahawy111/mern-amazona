@@ -1,7 +1,7 @@
 import { Badge, Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LoadingBox from "../componenets/LoadingBox";
 import MessageBox from "../componenets/MessageBox";
 import { cartAddItem } from "../slices/cartSlice";
@@ -11,6 +11,7 @@ const ProductScreen = () => {
   const params = useParams();
   const { slug } = params;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const products = useSelector((state) => state.product);
   const { cart } = useSelector((state) => state.cart);
   const product = products.products.find((item) => item.slug === slug);
@@ -22,6 +23,7 @@ const ProductScreen = () => {
   }
   const addToCartHandler = () => {
     dispatch(cartAddItem({ ...product, quantity }));
+    navigate("/cart");
   };
 
   return products.loading ? (

@@ -1,13 +1,15 @@
 import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
-import { Button, Col, ListGroup, Row } from "react-bootstrap";
+import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import MessageBox from "./../componenets/MessageBox";
 import { Link } from "react-router-dom";
-import { AiOutlineMinus } from "react-icons/ai";
+import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
+import { BsTrashFill } from "react-icons/bs";
 
 const CartScreen = () => {
   const { cart } = useSelector((state) => state.cart);
   const { cartItems } = cart;
+
   return (
     <div>
       <Helmet>
@@ -30,12 +32,25 @@ const CartScreen = () => {
                         className="img-fluid rounded img-thumbnail"
                         src={item.image}
                         alt={item.name}
-                      />
+                      />{" "}
                       <Link to={`/product/${item.slug}`}>{item.name}</Link>
                     </Col>
-                    <Col md={3}>
+                    <Col md={3} className="align-items-center">
                       <Button variant="light" disabled={item.quantity === 1}>
-                        <AiOutlineMinus />
+                        <AiFillMinusCircle size={22} />
+                      </Button>{" "}
+                      <span>{item.quantity}</span>{" "}
+                      <Button
+                        variant="light"
+                        disabled={item.quantity === item.countInStock}
+                      >
+                        <AiFillPlusCircle size={22} />
+                      </Button>
+                    </Col>
+                    <Col md={3}>${item.price}</Col>
+                    <Col md={2}>
+                      <Button variant="light">
+                        <BsTrashFill size={22} />
                       </Button>
                     </Col>
                   </Row>
@@ -44,7 +59,21 @@ const CartScreen = () => {
             </ListGroup>
           )}
         </Col>
-        <Col md={4}></Col>
+        <Col md={4}>
+          <Card>
+            <Card.Body>
+              <ListGroup variant="flush">
+                <ListGroup.Item>
+                  <h3>
+                    Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{" "}
+                    items) : $
+                    {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
+                  </h3>
+                </ListGroup.Item>
+              </ListGroup>
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
     </div>
   );
