@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import getQuery from "./../utils/getQuery";
 import { useDispatch, useSelector } from "react-redux";
 import { signin } from "../actions/auth.actions";
@@ -10,14 +10,24 @@ import MessageBox from "./../componenets/MessageBox";
 const SigninScreen = () => {
   const redirectUrl = getQuery(window.location.search);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const redirect = redirectUrl.redirect ? redirectUrl.redirect : "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const auth = useSelector((state) => state.auth);
+  const { auth } = useSelector((state) => state);
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(signin({ email, password }));
+    dispatch(signin({ email, password })).then(() => {
+      if (auth.user.name) {
+        navigate(redirect);
+      }
+    });
   };
+  useEffect(() => {
+    if (auth.user.name) {
+      navigate(redirect);
+    }
+  }, [navigate, redirect, auth.user.name]);
   return (
     <Container className="small-container">
       {auth.error && <MessageBox variant="danger">{auth.error}</MessageBox>}

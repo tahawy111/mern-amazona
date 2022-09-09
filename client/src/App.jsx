@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
-import { Navbar, Container, Nav, Badge } from "react-bootstrap";
+import { Navbar, Container, Nav, Badge, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import { getProducts } from "./actions/product.actions";
 import { Link } from "react-router-dom";
 import CartScreen from "./screens/CartScreen";
 import SigninScreen from "./screens/SigninScreen";
+import { signout } from "./slices/authSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -16,6 +17,10 @@ function App() {
     dispatch(getProducts());
   }, [dispatch]);
   const { cart } = useSelector((state) => state.cart);
+  const { auth } = useSelector((state) => state);
+  const signoutHandler = () => {
+    dispatch(signout());
+  };
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
@@ -33,6 +38,28 @@ function App() {
                   </Badge>
                 )}
               </Link>
+              {auth.user.name ? (
+                <NavDropdown title={auth.user.name} id="basic-nav-dropdown">
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>User Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/orderhistory">
+                    <NavDropdown.Item>Order History</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Divider />
+                  <Link
+                    to="#signout"
+                    className="dropdown-item"
+                    onClick={signoutHandler}
+                  >
+                    Sign Out
+                  </Link>
+                </NavDropdown>
+              ) : (
+                <Link className="nav-link" to="/signin">
+                  Sign In
+                </Link>
+              )}
             </Nav>
           </Container>
         </Navbar>
