@@ -18,3 +18,33 @@ export const signin = async (req, res) => {
     token: generateToken(user),
   });
 };
+
+export const signup = async (req, res) => {
+  if (await User.findOne({ email: req.body.email }))
+    return res.status(401).json({ error: "User is already exists" });
+
+  if (req.body.password.length < 6) {
+    return res
+      .status(401)
+      .json({ error: "Password must be at least 6 characters" });
+  }
+
+  const newUser = new User({
+    name: req.body.name,
+    email: req.body.email,
+    password: bcrypt.hashSync(req.body.password),
+  });
+
+  try {
+    const user = await newUser.save();
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      token: generateToken(user),
+    });
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+};

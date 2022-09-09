@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { saveShippingAddress } from "../slices/cartSlice";
+import CheckoutSteps from "../componenets/CheckoutSteps";
 
 const ShippingAddressScreen = () => {
   const { shippingAddress } = useSelector((state) => state.cart.cart);
@@ -28,6 +29,7 @@ const ShippingAddressScreen = () => {
       <Helmet>
         <title>Shipping Address</title>
       </Helmet>
+      <CheckoutSteps step1 step2 />
       <div className="container small-container">
         <h1 className="my-3">Shipping Address</h1>
         <Form onSubmit={submitHandler}>

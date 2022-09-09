@@ -22,17 +22,35 @@ export const cartSlice = createSlice({
     signinFailure: (state, action) => {
       return { ...state, error: action.payload, loading: false };
     },
+    signupRequest: (state, action) => {
+      return { ...state, user: {}, loading: true, error: "" };
+    },
+    signupSuccess: (state, action) => {
+      localStorage.setItem("userInfo", JSON.stringify(action.payload));
+      return { ...state, user: action.payload, loading: false };
+    },
+    signupFailure: (state, action) => {
+      return { ...state, error: action.payload, loading: false };
+    },
 
     signout: (state, action) => {
       localStorage.removeItem("userInfo");
       localStorage.removeItem("shippingAddress");
+      localStorage.removeItem("paymentMethod");
       return { ...state, error: "", user: {}, loading: false };
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { signinRequest, signinSuccess, signinFailure, signout } =
-  cartSlice.actions;
+export const {
+  signinRequest,
+  signinSuccess,
+  signinFailure,
+  signout,
+  signupRequest,
+  signupSuccess,
+  signupFailure,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
