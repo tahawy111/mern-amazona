@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import { Navbar, Container, Nav, Badge, NavDropdown } from "react-bootstrap";
@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import CartScreen from "./screens/CartScreen";
 import SigninScreen from "./screens/SigninScreen";
 import { signout } from "./slices/authSlice";
+import ShippingAddressScreen from "./screens/ShippingAddressScreen";
 
 function App() {
   const dispatch = useDispatch();
@@ -70,6 +71,16 @@ function App() {
               <Route path="/" element={<HomeScreen />} />
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
+              <Route
+                path="/shipping"
+                element={
+                  auth.user.name ? (
+                    <ShippingAddressScreen />
+                  ) : (
+                    <Navigate to="/signin?redirect=/shipping" />
+                  )
+                }
+              />
             </Routes>
           </Container>
         </main>

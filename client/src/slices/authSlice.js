@@ -25,6 +25,7 @@ export const cartSlice = createSlice({
 
     signout: (state, action) => {
       localStorage.removeItem("userInfo");
+      localStorage.removeItem("shippingAddress");
       return { ...state, error: "", user: {}, loading: false };
     },
   },

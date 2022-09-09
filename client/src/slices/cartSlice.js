@@ -5,6 +5,9 @@ const initialState = {
     cartItems: localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
       : [],
+    shippingAddress: localStorage.getItem("shippingAddress")
+      ? JSON.parse(localStorage.getItem("shippingAddress"))
+      : {},
   },
 };
 
@@ -34,10 +37,18 @@ export const cartSlice = createSlice({
 
       return { ...state, cart: { ...state.cart, cartItems } };
     },
+    saveShippingAddress: (state, action) => {
+      localStorage.setItem("shippingAddress", JSON.stringify(action.payload));
+      return {
+        ...state,
+        cart: { ...state.cart, shippingAddress: action.payload },
+      };
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { cartAddItem, cartRemoveItem } = cartSlice.actions;
+export const { cartAddItem, cartRemoveItem, saveShippingAddress } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;
