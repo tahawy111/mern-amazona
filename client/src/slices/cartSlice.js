@@ -48,7 +48,7 @@ export const cartSlice = createSlice({
       };
     },
     savePaymentMethod: (state, action) => {
-      localStorage.setItem("paymentMethod", JSON.stringify(action.payload));
+      localStorage.setItem("paymentMethod", action.payload);
       return {
         ...state,
         cart: { ...state.cart, paymentMethod: action.payload },

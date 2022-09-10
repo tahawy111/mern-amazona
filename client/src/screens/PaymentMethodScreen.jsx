@@ -25,7 +25,7 @@ const PaymentMethodScreen = () => {
     if (!shippingAddress.address) {
       navigate("/shipping");
     }
-  }, []);
+  }, [navigate, shippingAddress.address]);
 
   return (
     <div>
