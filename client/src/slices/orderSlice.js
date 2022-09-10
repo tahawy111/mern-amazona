@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   loading: false,
   error: null,
+  order: {},
 };
 
 export const cartSlice = createSlice({
@@ -10,19 +11,34 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     createRequest: (state) => {
-      return { ...state, loading: true, error: null };
+      return { ...state, order: {}, loading: true, error: null };
     },
-    createSuccess: (state) => {
-      return { ...state, loading: false };
+    createSuccess: (state, action) => {
+      return { ...state, order: action.payload, loading: false };
     },
     createFailure: (state, action) => {
+      return { ...state, loading: false, error: action.payload };
+    },
+    getOrderRequest: (state) => {
+      return { ...state, loading: true, order: {}, error: null };
+    },
+    getOrderSuccess: (state, action) => {
+      return { ...state, order: action.payload, loading: false };
+    },
+    getOrderFailure: (state, action) => {
       return { ...state, loading: false, error: action.payload };
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { createRequest, createSuccess, createFailure } =
-  cartSlice.actions;
+export const {
+  createRequest,
+  createSuccess,
+  createFailure,
+  getOrderRequest,
+  getOrderSuccess,
+  getOrderFailure,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

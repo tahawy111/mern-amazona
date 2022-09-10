@@ -14,6 +14,7 @@ import ShippingAddressScreen from "./screens/ShippingAddressScreen";
 import SignupScreen from "./screens/SignupScreen";
 import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
+import OrderScreen from "./screens/OrderScreen";
 
 function App() {
   const dispatch = useDispatch();
@@ -76,8 +77,26 @@ function App() {
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
-              <Route path="/payment" element={<PaymentMethodScreen />} />
-              <Route path="/placeorder" element={<PlaceOrderScreen />} />
+              <Route
+                path="/payment"
+                element={
+                  auth.user.name ? (
+                    <PaymentMethodScreen />
+                  ) : (
+                    <Navigate to="/signin?redirect=/payment" />
+                  )
+                }
+              />
+              <Route
+                path="/placeorder"
+                element={
+                  auth.user.name ? (
+                    <PlaceOrderScreen />
+                  ) : (
+                    <Navigate to="/signin?redirect=/placeorder" />
+                  )
+                }
+              />
               <Route
                 path="/shipping"
                 element={
@@ -85,6 +104,26 @@ function App() {
                     <ShippingAddressScreen />
                   ) : (
                     <Navigate to="/signin?redirect=/shipping" />
+                  )
+                }
+              />
+              <Route
+                path="/shipping"
+                element={
+                  auth.user.name ? (
+                    <ShippingAddressScreen />
+                  ) : (
+                    <Navigate to="/signin?redirect=/shipping" />
+                  )
+                }
+              />
+              <Route
+                path="/order/:orderId"
+                element={
+                  auth.user.name ? (
+                    <OrderScreen />
+                  ) : (
+                    <Navigate to="/signin?redirect=/order/:orderId" />
                   )
                 }
               />

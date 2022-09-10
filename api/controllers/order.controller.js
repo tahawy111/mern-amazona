@@ -14,3 +14,13 @@ export const create = async (req, res) => {
   const order = await newOrder.save();
   return res.status(201).json({ message: "New Order Created", order });
 };
+export const getById = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    return res.status(200).json({ order });
+  } catch (error) {
+    return res.status(400).json({
+      error: "Order not found",
+    });
+  }
+};
