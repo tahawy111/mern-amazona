@@ -8,13 +8,16 @@ import { store } from "./store";
 import { HelmetProvider } from "react-helmet-async";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <HelmetProvider>
-      <App />
-      <ToastContainer limit={1} position="bottom-center" />
+      <PayPalScriptProvider deferLoading={true}>
+        <App />
+        <ToastContainer limit={1} position="bottom-center" />
+      </PayPalScriptProvider>
     </HelmetProvider>
   </Provider>
 );

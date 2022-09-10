@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   loading: false,
   error: null,
-  order: {},
+  order: null,
 };
 
 export const cartSlice = createSlice({
@@ -11,7 +11,7 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     createRequest: (state) => {
-      return { ...state, order: {}, loading: true, error: null };
+      return { ...state, order: null, loading: true, error: null };
     },
     createSuccess: (state, action) => {
       return { ...state, order: action.payload, loading: false };
@@ -20,7 +20,7 @@ export const cartSlice = createSlice({
       return { ...state, loading: false, error: action.payload };
     },
     getOrderRequest: (state) => {
-      return { ...state, loading: true, order: {}, error: null };
+      return { ...state, loading: true, order: null, error: null };
     },
     getOrderSuccess: (state, action) => {
       return { ...state, order: action.payload, loading: false };

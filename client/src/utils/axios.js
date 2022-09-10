@@ -1,5 +1,7 @@
 import axios from "axios";
-const token = JSON.parse(localStorage.getItem("userInfo")).token;
+const token = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo")).token
+  : null;
 
 const axiosIntance = axios.create({
   baseURL: "http://localhost:2000/api/",
