@@ -30,3 +30,12 @@ export const getCategories = () => {
     }
   };
 };
+export const search = (payload) => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosIntance.get(
+        `/product/search?page=${payload.page}&query=${payload.query}&category=${payload.category}&price=${payload.price}`
+      );
+    } catch (error) {}
+  };
+};
