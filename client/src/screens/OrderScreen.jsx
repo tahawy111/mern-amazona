@@ -10,11 +10,18 @@ import MessageBox from "../componenets/MessageBox";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import axiosIntance from "./../utils/axios";
 import { toast } from "react-toastify";
+import {
+  payWithPaypalFailure,
+  payWithPaypalRequest,
+  payWithPaypalSuccess,
+} from "../slices/orderSlice";
 
 const OrderScreen = () => {
   const dispatch = useDispatch();
   const { orderId } = useParams();
-  const { order } = useSelector((state) => state.order);
+  const { order, loadingPay, successPay, errorPay } = useSelector(
+    (state) => state.order
+  );
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
   function createOrder(data, actions) {
@@ -33,11 +40,24 @@ const OrderScreen = () => {
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
       try {
+        dispatch(payWithPaypalRequest());
+        const { data } = await axiosIntance.put(
+          `/orders/${order._id}/pay`,
+          details
+        );
+
+        dispatch(payWithPaypalSuccess(data));
+        dispatch(getOrderById(order._id)).then(() => {
+          toast.success("Order is paid");
+        });
       } catch (error) {
-        // dispatch(payFail(error));
+        dispatch(payWithPaypalFailure(error));
         toast.error(error.response.data.error);
       }
     });
+  }
+  function onError(err) {
+    toast.error(err);
   }
 
   useEffect(() => {
@@ -182,10 +202,11 @@ const OrderScreen = () => {
                             <PayPalButtons
                               createOrder={createOrder}
                               onApprove={onApprove}
-                              onError
+                              onError={onError}
                             ></PayPalButtons>
                           </div>
                         )}
+                        {loadingPay && <LoadingBox />}
                       </ListGroup.Item>
                     )}
                   </ListGroup>

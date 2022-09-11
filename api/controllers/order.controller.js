@@ -24,3 +24,29 @@ export const getById = async (req, res) => {
     });
   }
 };
+export const pay = async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    order.paymentResult = {
+      id: req.body.id,
+      status: req.body.status,
+      updated_time: req.body.updated_time,
+      email_address: req.body.email_address,
+    };
+
+    const updatedOrder = await order.save();
+    return res.status(201).json({ message: "Order paid", order: updatedOrder });
+  } else {
+    return res.status(404).json({ error: "Order not found" });
+  }
+};
+export const getUserOrders = async (req, res) => {
+  const orders = await Order.find({ user: req.user._id });
+  if (orders) {
+    return res.status(200).json({ orders });
+  } else {
+    return res.status(404).json({ error: "Orders not found" });
+  }
+};

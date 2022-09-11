@@ -12,14 +12,15 @@ app.use(cors());
 
 allRoutes(app);
 
+// mongodb connection
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("DB Connected");
+  })
+  .catch((error) => {
+    console.log("Failed to connect to MongoD", error);
+  });
+
 // server
-app.listen(port, () => {
-  mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => {
-      console.log(`serve at http://localhost:${port}`);
-    })
-    .catch((error) => {
-      console.log("Failed to connect to MongoD", error);
-    });
-});
+app.listen(port, () => console.log(`serve at http://localhost:${port}`));

@@ -3,7 +3,11 @@ import {
   createFailure,
   createRequest,
   createSuccess,
+  getOrderFailure,
   getOrderRequest,
+  getOrdersFailure,
+  getOrdersRequest,
+  getOrdersSuccess,
   getOrderSuccess,
 } from "../slices/orderSlice";
 import axiosIntance from "../utils/axios";
@@ -29,7 +33,19 @@ export const getOrderById = (id) => {
       const res = await axiosIntance.get(`/orders/${id}`);
       dispatch(getOrderSuccess(res.data.order));
     } catch (error) {
-      console.log(error);
+      dispatch(getOrderFailure(error.response.data.error));
+    }
+  };
+};
+export const getMyOrders = () => {
+  return async (dispatch) => {
+    dispatch(getOrdersRequest());
+    try {
+      const res = await axiosIntance.get(`/orders/mine`);
+      console.log(res);
+      dispatch(getOrdersSuccess(res.data.orders));
+    } catch (error) {
+      dispatch(getOrdersFailure(error.response.data.error));
     }
   };
 };

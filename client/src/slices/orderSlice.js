@@ -4,6 +4,10 @@ const initialState = {
   loading: false,
   error: null,
   order: null,
+  loadingPay: false,
+  successPay: false,
+  errorPay: null,
+  orders: null,
 };
 
 export const cartSlice = createSlice({
@@ -28,6 +32,26 @@ export const cartSlice = createSlice({
     getOrderFailure: (state, action) => {
       return { ...state, loading: false, error: action.payload };
     },
+
+    getOrdersRequest: (state) => {
+      return { ...state, loading: true, orders: null, error: null };
+    },
+    getOrdersSuccess: (state, action) => {
+      return { ...state, orders: action.payload, loading: false };
+    },
+    getOrdersFailure: (state, action) => {
+      return { ...state, loading: false, error: action.payload };
+    },
+
+    payWithPaypalRequest: (state) => {
+      return { ...state, loadingPay: true, successPay: false, errorPay: null };
+    },
+    payWithPaypalSuccess: (state) => {
+      return { ...state, loadingPay: false, successPay: true };
+    },
+    payWithPaypalFailure: (state, action) => {
+      return { ...state, loadingPay: false, errorPay: action.payload };
+    },
   },
 });
 
@@ -39,6 +63,12 @@ export const {
   getOrderRequest,
   getOrderSuccess,
   getOrderFailure,
+  getOrdersRequest,
+  getOrdersSuccess,
+  getOrdersFailure,
+  payWithPaypalRequest,
+  payWithPaypalSuccess,
+  payWithPaypalFailure,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
