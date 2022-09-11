@@ -27,12 +27,14 @@ const OrderHistoryScreen = () => {
       ) : (
         <table className="table table-bordered">
           <thead>
-            <th>ID</th>
-            <th>DATE</th>
-            <th>TOTAL</th>
-            <th>PAID</th>
-            <th>DELIVERED</th>
-            <th>ACTIONS</th>
+            <tr>
+              <th>ID</th>
+              <th>DATE</th>
+              <th>TOTAL</th>
+              <th>PAID</th>
+              <th>DELIVERED</th>
+              <th>ACTIONS</th>
+            </tr>
           </thead>
           <tbody>
             {orders &&

@@ -32,6 +32,16 @@ export const cartSlice = createSlice({
     signupFailure: (state, action) => {
       return { ...state, error: action.payload, loading: false };
     },
+    updateProfileRequest: (state, action) => {
+      return { ...state, user: {}, loading: true, error: "" };
+    },
+    updateProfileSuccess: (state, action) => {
+      localStorage.setItem("userInfo", JSON.stringify(action.payload));
+      return { ...state, user: action.payload, loading: false };
+    },
+    updateProfileFailure: (state, action) => {
+      return { ...state, error: action.payload, loading: false };
+    },
 
     signout: (state, action) => {
       localStorage.removeItem("userInfo");
@@ -51,6 +61,9 @@ export const {
   signupRequest,
   signupSuccess,
   signupFailure,
+  updateProfileRequest,
+  updateProfileSuccess,
+  updateProfileFailure,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

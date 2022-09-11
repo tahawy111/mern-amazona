@@ -16,6 +16,7 @@ import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import OrderHistoryScreen from "./screens/OrderHistoryScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
-        <Navbar bg="dark" variant="dark">
+        <Navbar bg="dark" variant="dark" expand="lg">
           <Container>
             <LinkContainer to="/">
               <Navbar.Brand>amazona</Navbar.Brand>
@@ -140,6 +141,16 @@ function App() {
                     <OrderHistoryScreen />
                   ) : (
                     <Navigate to="/signin?redirect=/orderhistory" />
+                  )
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  auth.user.name ? (
+                    <ProfileScreen />
+                  ) : (
+                    <Navigate to="/signin?redirect=/profile" />
                   )
                 }
               />

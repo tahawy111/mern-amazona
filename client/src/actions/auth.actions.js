@@ -6,6 +6,9 @@ import {
   signupFailure,
   signupRequest,
   signupSuccess,
+  updateProfileFailure,
+  updateProfileRequest,
+  updateProfileSuccess,
 } from "../slices/authSlice.js";
 
 export const signin = (user) => {
@@ -28,6 +31,18 @@ export const signup = (user) => {
       dispatch(signupSuccess(res.data));
     } catch (error) {
       dispatch(signupFailure(error.response.data.error));
+    }
+  };
+};
+export const updateUserProfile = (user) => {
+  return async (dispatch) => {
+    dispatch(updateProfileRequest());
+    try {
+      const { data } = await axiosIntance.put("/user/profile", user);
+      dispatch(updateProfileSuccess(data));
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    } catch (error) {
+      dispatch(updateProfileFailure(error.response.data.error));
     }
   };
 };

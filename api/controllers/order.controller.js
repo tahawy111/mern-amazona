@@ -43,7 +43,7 @@ export const pay = async (req, res) => {
   }
 };
 export const getUserOrders = async (req, res) => {
-  const orders = await Order.find({ user: req.user._id });
+  const orders = await Order.find({ user: req.user._id }).sort({ _id: -1 });
   if (orders) {
     return res.status(200).json({ orders });
   } else {
