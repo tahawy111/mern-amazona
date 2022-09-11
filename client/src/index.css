@@ -39,7 +39,8 @@ main {
   color: #ffc000;
 }
 
-.btn-primary {
+.btn-primary,
+.btn-outline-primary {
   background: #ffc000 !important;
   color: #000 !important;
   border: 1px solid rgb(255 192 0 / 50%) !important;
@@ -49,9 +50,15 @@ main {
   border: 1px solid rgb(255 192 0 / 50%) !important;
   background: #eeb60f !important;
 }
-.btn-primary:focus {
+.btn-primary:focus,
+.btn-outline-primary:focus {
   border-color: #ffc000 !important;
   box-shadow: 0 0 0 0.25rem rgb(255 192 0 / 50%) !important;
+}
+
+.btn-outline-primary:focus {
+  border-color: none !important;
+  box-shadow: none !important;
 }
 
 .btn-primary:active {
@@ -73,4 +80,30 @@ main {
 .checkout-steps > div.active {
   border-bottom: 0.2rem solid #ffc000;
   color: #ffc000;
+}
+
+/* sidebar */
+.navbar-brand {
+  font-weight: bold;
+}
+
+.side-navbar {
+  width: 240px;
+  height: 100%;
+  position: absolute;
+  left: -300px;
+  background: #100901;
+  transition: 0.4s;
+}
+
+.site-container {
+  transition: 0.4s;
+}
+
+.active-cont {
+  margin-left: 240px;
+}
+
+.active-nav {
+  left: 0;
 }
