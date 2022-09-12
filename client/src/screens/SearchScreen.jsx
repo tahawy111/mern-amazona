@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import getQuery from "../utils/getQuery";
+import Rating from "./../componenets/Rating";
 
 const SearchScreen = () => {
   const dispatch = useDispatch();
@@ -92,7 +93,37 @@ const SearchScreen = () => {
           </div>
           <div>
             <h3>Avg. Customer Review</h3>
+            <ul>
+              {ratings.map((r) => (
+                <li key={r.name}>
+                  <Link
+                    to={getFilterUrl({ rating: r.rating })}
+                    className={`${r.rating}` === `${rating}` ? "text-bold" : ""}
+                  >
+                    <Rating caption={" & up"} rating={r.rating}></Rating>
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link
+                  to={getFilterUrl({ rating: "all" })}
+                  className={rating === "all" ? "text-bold" : ""}
+                >
+                  <Rating caption={" & up"} rating={0}></Rating>
+                </Link>
+              </li>
+            </ul>
           </div>
+        </Col>
+        <Col md={9} className="justify-content-between mb-3">
+          <Col md={6}>
+            <div>
+              {/* {countProducts === 0 ? "No" : countProducts} Results */}
+              {query !== "all" && ` : ${query}`}
+              {category !== "all" && ` : ${category}`}
+              {price !== "all" && ` : Price ${price}`}
+            </div>
+          </Col>
         </Col>
       </Row>
     </div>
