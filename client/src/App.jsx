@@ -32,10 +32,8 @@ function App() {
   const { auth } = useSelector((state) => state);
   const { categories, catLoading } = useSelector((state) => state.product);
   useEffect(() => {
-    if (auth.user.name) {
-      dispatch(getProducts());
-      dispatch(getCategories());
-    }
+    dispatch(getProducts());
+    dispatch(getCategories());
   }, [auth.user.name, dispatch]);
   const { cart } = useSelector((state) => state.cart);
   const signoutHandler = () => {

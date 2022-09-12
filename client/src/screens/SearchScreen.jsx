@@ -1,11 +1,13 @@
-import React from "react";
-import { Col, Row } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Button, Col, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { searchProducts } from "../actions/product.actions";
 import getQuery from "../utils/getQuery";
 import Rating from "./../componenets/Rating";
+import { LinkContainer } from "react-router-bootstrap";
 
 const SearchScreen = () => {
   const dispatch = useDispatch();
@@ -13,7 +15,9 @@ const SearchScreen = () => {
   const { categories } = useSelector((state) => state.product);
   const queryObj = getQuery(window.location.search);
   const { category, query, price, rating, page, order } = queryObj;
-
+  useEffect(() => {
+    dispatch(searchProducts());
+  }, []);
   const getFilterUrl = (filter) => {
     const filterPage = filter.page || page;
     const filterCategory = filter.category || category;
@@ -122,10 +126,59 @@ const SearchScreen = () => {
               {query !== "all" && ` : ${query}`}
               {category !== "all" && ` : ${category}`}
               {price !== "all" && ` : Price ${price}`}
+              {rating !== "all" && " : Rating " + rating + " & up"}
+              {query !== "all" ||
+              category !== "all" ||
+              rating !== "all" ||
+              price !== "all" ? (
+                <Button variant="light" onClick={() => navigate("/search")}>
+                  <i className="fas fa-times-circle"></i>
+                </Button>
+              ) : null}
             </div>
           </Col>
         </Col>
+        <Col className="text-end">
+          Sort by{" "}
+          <select
+            value={order}
+            onChange={(e) => {
+              navigate(getFilterUrl({ order: e.target.value }));
+            }}
+          >
+            <option value="newest">Newest Arrivals</option>
+            <option value="lowest">Price: Low to High</option>
+            <option value="highest">Price: High to Low</option>
+            <option value="toprated">Avg. Customer Reviews</option>
+          </select>
+        </Col>
       </Row>
+      {/* {products.length === 0 && <MessageBox>No Product Found</MessageBox>}
+
+      <Row>
+        {products.map((product) => (
+          <Col sm={6} lg={4} className="mb-3" key={product._id}>
+            <Product product={product}></Product>
+          </Col>
+        ))}
+      </Row> */}
+
+      <div>
+        {/* {[...Array(pages).keys()].map((x) => (
+          <LinkContainer
+            key={x + 1}
+            className="mx-1"
+            to={getFilterUrl({ page: x + 1 })}
+          >
+            <Button
+              className={Number(page) === x + 1 ? "text-bold" : ""}
+              variant="light"
+            >
+              {x + 1}
+            </Button>
+          </LinkContainer>
+        ))} */}
+      </div>
     </div>
   );
 };
